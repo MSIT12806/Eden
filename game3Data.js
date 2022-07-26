@@ -1,4 +1,4 @@
-[
+var data = [
   {
     "advantage": "自信表達",
     "shortcoming": "堅持己見",
