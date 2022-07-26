@@ -1,146 +1,182 @@
- var data = [
+[
   {
     "advantage": "自信表達",
-    "shortcoming": "堅持己見"
+    "shortcoming": "堅持己見",
+    "is_advantage": true
   },
   {
     "advantage": "貫徹始終",
-    "shortcoming": "缺乏應變"
+    "shortcoming": "缺乏應變",
+    "is_advantage": true
   },
   {
     "advantage": "責任感強",
-    "shortcoming": "工作過勞"
+    "shortcoming": "工作過勞",
+    "is_advantage": true
   },
   {
     "advantage": "善於改進",
-    "shortcoming": "喜愛批判"
+    "shortcoming": "喜愛批判",
+    "is_advantage": true
   },
   {
     "advantage": "懂得自制",
-    "shortcoming": "支配慾高"
+    "shortcoming": "支配慾高",
+    "is_advantage": true
   },
   {
     "advantage": "擅長整理",
-    "shortcoming": "難忍雜亂"
+    "shortcoming": "難忍雜亂",
+    "is_advantage": true
   },
   {
     "advantage": "同理他人",
-    "shortcoming": "過度大方"
+    "shortcoming": "過度大方",
+    "is_advantage": true
   },
   {
     "advantage": "待人親切",
-    "shortcoming": "費心討好"
+    "shortcoming": "費心討好",
+    "is_advantage": true
   },
   {
     "advantage": "炒熱氣氛",
-    "shortcoming": "難忍尷尬"
+    "shortcoming": "難忍尷尬",
+    "is_advantage": true
   },
   {
     "advantage": "善於讚賞",
-    "shortcoming": "不說真相"
+    "shortcoming": "不說真相",
+    "is_advantage": true
   },
   {
     "advantage": "以人為重",
-    "shortcoming": "容易吃虧"
+    "shortcoming": "容易吃虧",
+    "is_advantage": true
   },
   {
     "advantage": "樂於助人",
-    "shortcoming": "不會拒絕"
+    "shortcoming": "不會拒絕",
+    "is_advantage": true
   },
   {
     "advantage": "待人溫柔",
-    "shortcoming": "內向害羞"
+    "shortcoming": "內向害羞",
+    "is_advantage": true
   },
   {
     "advantage": "善於合作",
-    "shortcoming": "沒有主見"
+    "shortcoming": "沒有主見",
+    "is_advantage": true
   },
   {
     "advantage": "維持關係",
-    "shortcoming": "逃避衝突"
+    "shortcoming": "逃避衝突",
+    "is_advantage": true
   },
   {
     "advantage": "不傷害人",
-    "shortcoming": "隱藏己見"
+    "shortcoming": "隱藏己見",
+    "is_advantage": true
   },
   {
     "advantage": "謙虛待人",
-    "shortcoming": "缺乏自信"
+    "shortcoming": "缺乏自信",
+    "is_advantage": true
   },
   {
     "advantage": "不犯大錯",
-    "shortcoming": "糾結小錯"
+    "shortcoming": "糾結小錯",
+    "is_advantage": true
   },
   {
     "advantage": "聆聽他人",
-    "shortcoming": "過度依賴"
+    "shortcoming": "過度依賴",
+    "is_advantage": true
   },
   {
     "advantage": "善於忍耐",
-    "shortcoming": "壓抑自我"
+    "shortcoming": "壓抑自我",
+    "is_advantage": true
   },
   {
     "advantage": "小心警慎",
-    "shortcoming": "猜疑心重"
+    "shortcoming": "猜疑心重",
+    "is_advantage": true
   },
   {
     "advantage": "工作有效",
-    "shortcoming": "只顧己利"
+    "shortcoming": "只顧己利",
+    "is_advantage": true
   },
   {
     "advantage": "沉著冷靜",
-    "shortcoming": "缺乏幽默"
+    "shortcoming": "缺乏幽默",
+    "is_advantage": true
   },
   {
     "advantage": "做事高標",
-    "shortcoming": "工作狂熱"
+    "shortcoming": "工作狂熱",
+    "is_advantage": true
   },
   {
     "advantage": "理性行事",
-    "shortcoming": "待人冷漠"
+    "shortcoming": "待人冷漠",
+    "is_advantage": true
   },
   {
     "advantage": "獨立完成",
-    "shortcoming": "不愛合作"
+    "shortcoming": "不愛合作",
+    "is_advantage": true
   },
   {
     "advantage": "充分準備",
-    "shortcoming": "過於執著"
+    "shortcoming": "過於執著",
+    "is_advantage": true
   },
   {
     "advantage": "客觀判斷",
-    "shortcoming": "只重資訊"
+    "shortcoming": "只重資訊",
+    "is_advantage": true
   },
   {
     "advantage": "認真分析",
-    "shortcoming": "優柔寡斷"
+    "shortcoming": "優柔寡斷",
+    "is_advantage": true
   },
   {
     "advantage": "應對快速",
-    "shortcoming": "欠缺考量"
+    "shortcoming": "欠缺考量",
+    "is_advantage": true
   },
   {
     "advantage": "享受改變",
-    "shortcoming": "缺乏一致"
+    "shortcoming": "缺乏一致",
+    "is_advantage": true
   },
   {
     "advantage": "善於發想",
-    "shortcoming": "做白日夢"
+    "shortcoming": "做白日夢",
+    "is_advantage": true
   },
   {
     "advantage": "追求自由",
-    "shortcoming": "不受控制"
+    "shortcoming": "不受控制",
+    "is_advantage": true
   },
   {
     "advantage": "情感豐富",
-    "shortcoming": "情緒難抑"
+    "shortcoming": "情緒難抑",
+    "is_advantage": true
   },
   {
     "advantage": "好惡分明",
-    "shortcoming": "性格獨特"
+    "shortcoming": "性格獨特",
+    "is_advantage": true
   },
   {
     "advantage": "勇於嘗新",
-    "shortcoming": "三分熱度"
+    "shortcoming": "三分熱度",
+    "is_advantage": true
   }
-];
+]
