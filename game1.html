@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <style>
+        .hidden-at-beggin {
+            display: none;
+        }
+    </style>
+    <div id="notReady">
+        網頁加載中，請稍後...
+    </div>
+    <!-- Required Stylesheets -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+
+    <div id="app" class="hidden-at-beggin">
+        <div class="text-center mb-3 d-flex justify-content-between">
+            <b-spinner variant="success" label="Spinning" v-show="!this.vueState.ready"></b-spinner>
+        </div>
+        <b-container fluid="md" v-show="this.vueState.ready">
+            <div v-for="(item,index) in pics" :key="index" :index="index" v-show="index==nowContext.number" :style="{
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundImage: `url(${item.picture})`, 
+            height: '510px', 
+            fontSize: '80px',
+            textShadow: '#FFF 1px 0 10px',
+            textAlign:'right',
+                    }">{{item.number}}</div>
+
+            <b-button block size="lg" @click="getContextRandom()">隨機抽卡</b-button>
+            <b-button block size="lg" @click="getContextSequence()">循序抽卡</b-button>
+            </b-col>
+        </b-container>
+    </div>
+    <!-- axios 非同步呼叫套件 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- vue 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
+    <!-- bootstrap-vue -->
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script>
+        window.app = new Vue({
+            el: '#app',
+
+            //model層
+            data() {
+                return {
+                    vueState: {
+                        ready: false,
+                    },
+                    nowContext: {
+                        number: "",
+                    },
+                    pics: {},
+                }
+            },
+            methods: {
+                getContextRandom() {
+                    this.nowContext.number = this.getRandom(1, this.pics.length - 1);
+                },
+                getContextSequence() {
+                    if (this.nowContext.number < 37)
+                        ++this.nowContext.number;
+                    else
+                        this.nowContext.number = 1;
+                },
+                getRandom(min, max) {
+                    return Math.floor(Math.random() * (max - min + 1)) + min;
+                },
+            },
+
+            //生命週期事件
+            mounted() {
+                axios.get("https://msit12806.github.io/Eden/game1Data.json").then(res => {
+                    console.log(res.data);
+                    this.pics = res.data;
+                    this.vueState.ready = true;
+                    this.nowContext.number = 0
+                });
+                var t = document.getElementById("app");
+                t.classList.remove("hidden-at-beggin");
+                var notReady = document.getElementById("notReady");
+                notReady.classList.add("hidden-at-beggin");
+            },
+        });
+    </script>
+</body>
+
+</html>

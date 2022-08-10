@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Required Stylesheets -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <style>
+        .carousel-caption {
+            top: 20%;
+            left: 15%;
+            right: 15%;
+            display: block;
+            text-align: center;
+        }
+
+        /* 文字水平置中 */
+        .text-h-center {
+            text-align: center;
+        }
+
+        /* 文字垂直置中 */
+        .text-v-center {
+            vertical-align: top;
+        }
+
+        .text-v-center:before {
+            content: "";
+            display: inline-block;
+            width: 0;
+            height: 100%;
+            vertical-align: middle;
+        }
+
+        .text-v-center p {
+            display: inline-block;
+        }
+    </style>
+    <style>
+        .hidden-at-beggin {
+            display: none;
+        }
+    </style>
+    <div id="notReady">
+        網頁加載中，請稍後...
+    </div>
+    <!-- Our application root element -->
+    <div id="app" style="background-color: #FFF8DC;">
+
+        <b-container>
+            <b-form-select id="input-3" v-model="topic" @change="getContext();">
+
+                <b-form-select-option value="0">請選擇題目</b-form-select-option>
+
+                <b-form-select-option value="1">第一階 fun</b-form-select-option>
+                <b-form-select-option value="2">第二階 finding</b-form-select-option>
+                <b-form-select-option value="3">第三階 feeling</b-form-select-option>
+                <b-form-select-option value="4">第四階 future</b-form-select-option>
+            </b-form-select>
+        </b-container>
+        <b-container>
+            <b-carousel ref="carousel" v-model="slide" :interval="000" controls img-width="1024" img-height="480"
+                @sliding-start="onSlideStart" @sliding-end="onSlideEnd">
+
+                <!-- Slide with blank fluid image to maintain slide aspect ratio -->
+                <b-carousel-slide v-for="(i, index) in nowContext" :key="index" :index="index" img-blank
+                    img-alt="Blank image">
+                    <template #img>
+                        <b-card>
+                            <div class="text-light" :style="{backgroundColor:colors[topic]}">
+                                <div style="height:60vh; width: 100%;">
+                                    <div style="height: 100%; font-size:xx-large;"
+                                        class="m-5 text-h-center text-v-center">
+                                        <p>{{i.question}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </b-card>
+                    </template>
+                </b-carousel-slide>
+            </b-carousel>
+            <b-button block size="lg" @click="randomNext()">隨機進行</b-button>
+        </b-container>
+    </div>
+    <!-- Required scripts -->
+    <!-- axios 非同步呼叫套件 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- vue 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
+    <!-- bootstrap-vue -->
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
+    <script>
+        window.app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    vueState: {
+                        ready: false,
+                    },
+                    data: {},
+                    slide: 0,
+                    sliding: null,
+                    nowContext: [{
+                        level: "0",
+                        question: "請選擇題目"
+                    }],
+                    topic: "0",
+                    colors: ['#444444' /*灰黑*/ , '#FF8C00' /*淡黃*/ , '#0d6efd' /*淡藍*/ , '#d63384' /*淡粉*/ ,
+                        '#6610f2' /*淡紫*/
+                    ],
+                }
+            },
+            methods: {
+                randomNext() {
+                    var index = this.getRandom(0, this.nowContext.length - 1);
+                    this.$refs.carousel.setSlide(index)
+                },
+                onSlideStart(slide) {
+                    this.sliding = true
+                },
+                onSlideEnd(slide) {
+                    this.sliding = false
+                },
+
+                getContext() {
+                    let selectGroup = this.data.filter(i => i.level.split(',').includes(this.topic));
+                    this.nowContext = selectGroup;
+                },
+                getRandom(min, max) {
+                    return Math.floor(Math.random() * (max - min + 1)) + min;
+                },
+            },
+            //生命週期事件
+            mounted() {
+                axios.get("https://msit12806.github.io/Eden/game2Data.json").then(res => {
+                    console.log(res.data);
+                    this.data = res.data;
+                    this.vueState.ready = true;
+                });
+                var t = document.getElementById("app");
+                t.classList.remove("hidden-at-beggin");
+                var notReady = document.getElementById("notReady");
+                notReady.classList.add("hidden-at-beggin");
+            },
+        })
+    </script>
+</body>
+
+</html>

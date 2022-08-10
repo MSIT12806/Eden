@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Required Stylesheets -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <style>
+    </style>
+    <!-- Our application root element -->
+    <div id="app" style="background-color: #FFF8DC;">
+
+        <b-container>
+            <div>
+                <b-card no-body style="max-width: 20rem;" header-bg-variant="dark">
+                    <template #header>
+                        <h4 class="text-light">Hello World</h4>
+                    </template>
+
+                    <b-card-img src="https://placekitten.com/480/210" alt="Image" bottom></b-card-img>
+                    <b-card-footer>
+                        <h4 class="">Hello World</h4>
+                    </b-card-footer>
+
+                    <b-button block size="lg" variant="primary">下一張</button>
+                </b-card>
+            </div>
+        </b-container>
+    </div>
+
+
+    <script src="https://msit12806.github.io/Eden/game4Data.js"></script>
+    <!-- Required scripts -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
+    <script>
+        window.app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    slide: 0,
+                    sliding: null,
+                    nowContext: [{
+                        level: "level_0",
+                        question: "請選擇題目"
+                    }],
+                    topic: "level_0",
+                    colors: ['#0d6efd', '#6610f2', '#6f42c1', '#d63384', '#dc3545', '#FF8C00', '#198754',
+                        '#20c997', '#0dcaf0',
+                    ],
+                }
+            },
+            methods: {
+                onSlideStart(slide) {
+                    this.sliding = true
+                },
+                onSlideEnd(slide) {
+                    this.sliding = false
+                },
+
+                getContext() {
+                    let selectGroup = data.filter(i => i.level.split(',').includes(this.topic));
+                    this.nowContext = selectGroup;
+                },
+                getRandom(min, max) {
+                    return Math.floor(Math.random() * (max - min + 1)) + min;
+                },
+            }
+        })
+    </script>
+</body>
+
+</html>

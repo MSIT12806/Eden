@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style type="text/css">
+        .container[data-v-06426b3c] {
+            position: relative;
+            margin: 0 auto;
+            overflow: hidden;
+            width: 600px;
+            height: 400px;
+        }
+
+        .page[data-v-06426b3c] {
+            position: absolute;
+            width: 600px;
+            height: 400px;
+
+        }
+
+        .right-in-enter[data-v-06426b3c] {
+            left: 100%;
+        }
+
+        .right-in-enter-acrive[data-v-06426b3c] {
+            transition: left 5s;
+        }
+
+        .right-in-enter-to[data-v-06426b3c] {
+            left: 0%;
+        }
+    </style>
+</head>
+
+<body style="background-color: gray ;">
+    <div id="root">
+        <transition-group class="container" tag="div" :name="transitionName">
+            <div data-v-06426b3c class="page" v-for="(img, index) of imgs" :key="index" v-show="index===this.show">
+                <img :src="img.src" alt="">
+            </div>
+        </transition-group>
+    </div>
+    <script src="http://unpkg.com/vue@next"></script>
+    <script>
+        let timer;
+        const autoPlayInterval = 5000;
+
+        const vm = Vue.createApp({
+            data() {
+                return {
+                    transitionName: "right-in",
+                    show: 0,
+                    imgs: [{
+                            src: "https://picsum.photos/600/400?random=1"
+                        },
+                        {
+                            src: "https://picsum.photos/600/400?random=2"
+                        },
+                        {
+                            src: "https://picsum.photos/600/400?random=3"
+                        },
+                        {
+                            src: "https://picsum.photos/600/400?random=4"
+                        },
+                        {
+                            src: "https://picsum.photos/600/400?random=5"
+                        }
+                    ]
+                };
+            },
+            //生命週期事件
+        });
+        vm.mount('#root');
+    </script>
+</body>
+
+</html>
