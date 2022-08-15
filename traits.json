@@ -1,4 +1,4 @@
-var data = [
+ [
   {
     "advantage": "自信表達",
     "shortcoming": "堅持己見",
@@ -215,4 +215,4 @@ var data = [
     "is_advantage": true,
     "choose_state": 0
   }
-];
+]
