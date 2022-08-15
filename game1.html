@@ -81,7 +81,7 @@
 
             //生命週期事件
             mounted() {
-                axios.get("https://msit12806.github.io/Eden/game1Data.json").then(res => {
+                axios.get("https://msit12806.github.io/Eden/imgs.json").then(res => {
                     console.log(res.data);
                     this.pics = res.data;
                     this.vueState.ready = true;

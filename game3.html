@@ -23,31 +23,59 @@
     <div id="notReady">
         網頁加載中，請稍後...
     </div>
-    <div id="app">
-        <div v-if="this.nowStep == 0">
-            <div v-for="(item,index) in traits">
-                <b-button variant="light" v-if="item.choose_state==0" @click="setChooseState(item)">口</b-button>
-                <b-button variant="light" v-else-if="item.choose_state==1" @click="setChooseState(item)">真</b-button>
-                <b-button variant="light" v-else-if="item.choose_state==2" @click="setChooseState(item)">假</b-button>
-                <label v-if="item.is_advantage">{{item.advantage}}</label>
-                <label v-else>{{item.shortcoming}}</label>
-                <button v-if="item.is_advantage" @click="change(item)">看缺點</button>
-                <button v-else @click="change(item)">看優點</button>
-            </div>
+    <div id="app" class="hidden-at-beggin">
+        <b-container>
+            <div>
+                <div v-if="this.nowStep == 0">
+                    特質32
+                    <b-card-group deck>
+                        <b-card border-variant="primary" header="請選擇最符合的三個描述" header-bg-variant="primary"
+                            header-text-variant="white" align="center">
+                            <b-form-group>
+                                <b-form-checkbox v-model="selected" v-for="t in traits" :value="t" stacked switches
+                                    size="lg" :state="state">{{t.advantage}}
+                                </b-form-checkbox>
+                                <b-form-invalid-feedback :state="state">Please select two</b-form-invalid-feedback>
+                                <b-form-valid-feedback :state="state">Thank you</b-form-valid-feedback>
+                            </b-form-group>
+                            <div>
+                                <b-button @click="ready()">我選好了 </b-button>
+                            </div>
+                        </b-card>
 
-            <div><button @click="ready()">我選好了 </button></div>
-        </div>
-        <div v-else-if="this.nowStep==1">
-            <div v-for="(item,index) in choosenTraits">
-                <b-button variant="light" v-if="item.choose_state==0" @click="setChooseState(item)">口</b-button>
-                <b-button variant="light" v-else-if="item.choose_state==1" @click="setChooseState(item)">真</b-button>
-                <b-button variant="light" v-else-if="item.choose_state==2" @click="setChooseState(item)">假</b-button>
-                <label v-if="item.is_advantage">{{item.advantage}}</label>
-                <label v-else>{{item.shortcoming}}</label>
-                <button v-if="item.is_advantage" @click="change(item)">看缺點</button>
-                <button v-else @click="change(item)">看優點</button>
+                    </b-card-group>
+                </div>
+                <div v-else-if="this.nowStep==1">
+                    您選擇的特質：
+                    <b-card-group v-if="this.clientState.showGood" deck>
+                        <b-card  border-variant="success" header-bg-variant="success" header="好處" header-text-variant="white" align="center">
+                            <b-form-group>
+                                <div v-for="s in selected">
+                                    <p>{{s.advantage}}</p>
+                                </div>
+                            </b-form-group>
+                            <div>
+                                <b-button @click="changeShowState()">看壞處 </b-button>
+                            </div>
+                        </b-card>
+                    </b-card-group>
+                   
+                    <b-card-group v-else deck>
+                        <b-card  border-variant="danger" header-bg-variant="danger" header="壞處" header-text-variant="white" align="center">
+                            <b-form-group>
+                                <div v-for="s in selected">
+                                    <p>{{s.shortcoming}}</p>
+                                </div>
+                            </b-form-group>
+                            <div>
+                                <b-button @click="changeShowState()">看好處 </b-button>
+                            </div>
+                        </b-card>
+                    </b-card-group>
+                </div>
             </div>
-        </div>
+        </b-container>
+
     </div>
 
     <!-- Required scripts -->
@@ -57,25 +85,30 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
     <!-- bootstrap-vue -->
     <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
-    <script src="https://msit12806.github.io/Eden/game3Data.js"></script>
     <script>
         window.app = new Vue({
             el: '#app',
-            
+
             //model層
             data() {
                 return {
+                    clientState:{
+                        showGood : true,
+                    },
                     vueState: {
                         ready: false,
                     },
-                    traits: data,
+                    selected: [],
+                    traits: {},
                     choosenTraits: [],
                     nowStep: 0,
                 }
             },
             methods: {
+                changeShowState(){
+                    this.clientState.showGood = ! this.clientState.showGood;
+                },
                 setChooseState(item) {
-                    console.log(item);
                     switch (item.choose_state) {
                         case 0:
                             item.choose_state = 1;
@@ -94,20 +127,32 @@
                 ready() {
                     this.nowStep = 1;
                     this.choosenTraits = this.traits.filter(i => i.choose_state != 0);
-                }
+                },
+                //亂數排序方法
+                shuffle(array) {
+                    for (let i = array.length - 1; i > 0; i--) {
+                        let j = Math.floor(Math.random() * (i + 1));
+                        [array[i], array[j]] = [array[j], array[i]];
+                    }
+                },
             },
             //生命週期事件
             mounted() {
-                // axios.get("https://msit12806.github.io/Eden/game2Data.json").then(res => {
-                //     console.log(res.data);
-                //     this.data = res.data;
-                //     this.vueState.ready = true;
-                // });
+                axios.get("https://msit12806.github.io/Eden/traits.json").then(res => {
+                    this.traits = res.data;
+                    this.vueState.ready = true;
+                });
                 var t = document.getElementById("app");
                 t.classList.remove("hidden-at-beggin");
                 var notReady = document.getElementById("notReady");
                 notReady.classList.add("hidden-at-beggin");
             },
+            computed: {
+                state() {
+                    return this.selected.length === 3
+                }
+            }
+
         });
     </script>
 </body>

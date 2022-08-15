@@ -20,26 +20,27 @@
         <b-container>
             <div>
                 <b-card no-body style="max-width: 20rem;" header-bg-variant="dark">
-                    <template #header>
-                        <h4 class="text-light text-center">Hello World</h4>
-                    </template>
-
-                    <b-card-img src="https://placekitten.com/480/210" alt="Image" bottom></b-card-img>
+                    
+                    <b-card-header class="bg-dark">
+                        <h4 class="text-light text-center">{{this.nowCardState.trait.advantage}}</h4>
+                    </b-card-header>
+                    <b-card-img :src="this.nowCardState.img.picture" alt="Image" bottom></b-card-img>
                     <b-card-footer>
-                        <h4 class="text-center">Hello World</h4>
+                        <h4 class="text-center">{{this.nowCardState.trait.shortcoming}}</h4>
                     </b-card-footer>
 
-                    <b-button block size="lg" variant="primary">下一張</button>
+                    <b-button block size="lg" variant="primary" @click="setCardState">下一張</button>
                 </b-card>
             </div>
         </b-container>
     </div>
 
-
-    <script src="https://msit12806.github.io/Eden/game4Data.js"></script>
     <!-- Required scripts -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
+    <!-- axios 非同步呼叫套件 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- vue 2 -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
+    <!-- bootstrap-vue -->
     <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 
     <script>
@@ -47,13 +48,23 @@
             el: '#app',
             data() {
                 return {
-                    slide: 0,
-                    sliding: null,
-                    nowContext: [{
-                        level: "level_0",
-                        question: "請選擇題目"
-                    }],
-                    topic: "level_0",
+                    vueState: {
+                        ready: false,
+                    },
+                    nowCardState: {
+                        img: {
+                            number: '',
+                            picture: 'https://i.imgur.com/tQ8OjT7.jpg'
+                        },
+                        trait: {
+                            advantage: '',
+                            shortcoming: '',
+                            is_advantage: true,
+                            choose_state: 0
+                        },
+                    },
+                    imgs: {},
+                    traits: {},
                     colors: ['#0d6efd', '#6610f2', '#6f42c1', '#d63384', '#dc3545', '#FF8C00', '#198754',
                         '#20c997', '#0dcaf0',
                     ],
@@ -66,15 +77,36 @@
                 onSlideEnd(slide) {
                     this.sliding = false
                 },
-
-                getContext() {
-                    let selectGroup = data.filter(i => i.level.split(',').includes(this.topic));
-                    this.nowContext = selectGroup;
+                setCardState() {
+                    this.nowCardState.img = this.imgs[this.getRandom(1, this.imgs.length - 1)];
+                    this.nowCardState.trait = this.traits[this.getRandom(0, this.traits.length - 1)];
                 },
                 getRandom(min, max) {
                     return Math.floor(Math.random() * (max - min + 1)) + min;
                 },
-            }
+            },
+            mounted() {
+                let triatsUrl =
+                    "https://msit12806.github.io/Eden/traits.json";
+                let imgsUrl =
+                    "https://msit12806.github.io/Eden/imgs.json";
+
+                const getTriats = axios.get(triatsUrl);
+                const getImgs = axios.get(imgsUrl);
+
+                axios.all([getTriats, getImgs]).then(axios.spread((...responses) => {
+                    const traitsData = responses[0].data;
+                    const imgsData = responses[1].data;
+
+                    // use/access the results
+
+                    this.traits = traitsData;
+                    this.imgs = imgsData;
+                    this.vueState.ready = true;
+                }));
+
+
+            },
         })
     </script>
 </body>
