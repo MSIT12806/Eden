@@ -27,15 +27,14 @@
         <b-container>
             <div>
                 <div v-if="this.nowStep == 0">
-                    特質32
                     <b-card-group deck>
-                        <b-card border-variant="primary" header="請選擇最符合的三個描述" header-bg-variant="primary"
+                        <b-card border-variant="primary" header="請選擇最符合的3~5個描述" header-bg-variant="primary"
                             header-text-variant="white" align="center">
                             <b-form-group>
                                 <b-form-checkbox v-model="selected" v-for="t in traits" :value="t" stacked switches
                                     size="lg" :state="state">{{t.advantage}}
                                 </b-form-checkbox>
-                                <b-form-invalid-feedback :state="state">Please select two</b-form-invalid-feedback>
+                                <b-form-invalid-feedback :state="state">請選擇最符合的3~5個描述</b-form-invalid-feedback>
                                 <b-form-valid-feedback :state="state">Thank you</b-form-valid-feedback>
                             </b-form-group>
                             <div>
@@ -48,7 +47,8 @@
                 <div v-else-if="this.nowStep==1">
                     您選擇的特質：
                     <b-card-group v-if="this.clientState.showGood" deck>
-                        <b-card  border-variant="success" header-bg-variant="success" header="好處" header-text-variant="white" align="center">
+                        <b-card border-variant="success" header-bg-variant="success" header="好處"
+                            header-text-variant="white" align="center">
                             <b-form-group>
                                 <div v-for="s in selected">
                                     <p>{{s.advantage}}</p>
@@ -59,9 +59,10 @@
                             </div>
                         </b-card>
                     </b-card-group>
-                   
+
                     <b-card-group v-else deck>
-                        <b-card  border-variant="danger" header-bg-variant="danger" header="壞處" header-text-variant="white" align="center">
+                        <b-card border-variant="danger" header-bg-variant="danger" header="壞處"
+                            header-text-variant="white" align="center">
                             <b-form-group>
                                 <div v-for="s in selected">
                                     <p>{{s.shortcoming}}</p>
@@ -92,8 +93,8 @@
             //model層
             data() {
                 return {
-                    clientState:{
-                        showGood : true,
+                    clientState: {
+                        showGood: true,
                     },
                     vueState: {
                         ready: false,
@@ -105,8 +106,8 @@
                 }
             },
             methods: {
-                changeShowState(){
-                    this.clientState.showGood = ! this.clientState.showGood;
+                changeShowState() {
+                    this.clientState.showGood = !this.clientState.showGood;
                 },
                 setChooseState(item) {
                     switch (item.choose_state) {
@@ -149,7 +150,8 @@
             },
             computed: {
                 state() {
-                    return this.selected.length === 3
+                    return this.selected.length === 3 || this.selected.length === 4 || this.selected.length ===
+                        5;
                 }
             }
 

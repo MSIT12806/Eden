@@ -27,20 +27,17 @@
         }
 
         /* 文字垂直置中 */
-        .text-v-center {
-            vertical-align: top;
+        .box {
+            height: 60vh;
+            line-height: 60vh;
+            text-align: center;
         }
 
-        .text-v-center:before {
-            content: "";
+
+        .box2 .content {
             display: inline-block;
-            width: 0;
-            height: 100%;
+            line-height: 1.3;
             vertical-align: middle;
-        }
-
-        .text-v-center p {
-            display: inline-block;
         }
     </style>
     <style>
@@ -66,8 +63,9 @@
             </b-form-select>
         </b-container>
         <b-container>
-            <b-carousel ref="carousel" v-model="slide" :interval="000" controls img-width="1024" img-height="480"
-                @sliding-start="onSlideStart" @sliding-end="onSlideEnd">
+            <b-carousel ref="carousel" v-model="slide" :interval="000"
+                :controls="this.countdownObj.dismissCountDown == 0" :no-touch="!this.countdownObj.dismissCountDown == 0"
+                img-width="1024" img-height="480" @sliding-start="onSlideStart" @sliding-end="onSlideEnd">
 
                 <!-- Slide with blank fluid image to maintain slide aspect ratio -->
                 <b-carousel-slide v-for="(i, index) in nowContext" :key="index" :index="index" img-blank
@@ -76,9 +74,10 @@
                         <b-card>
                             <div class="text-light" :style="{backgroundColor:colors[topic]}">
                                 <div style="height:60vh; width: 100%;">
-                                    <div style="height: 100%; font-size:xx-large;"
-                                        class="m-5 text-h-center text-v-center">
-                                        <p>{{i.question}}</p>
+                                    <div style="height: 100%; font-size:xx-large;" class="m-5 box box2">
+                                        <div class="content">
+                                            <p>{{i.question}}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +85,14 @@
                     </template>
                 </b-carousel-slide>
             </b-carousel>
-            <b-button block size="lg" @click="randomNext()">隨機進行</b-button>
+            <b-alert :show="this.countdownObj.dismissCountDown" variant="warning"
+                @dismiss-count-down="countDownChanged">
+                <p>請等待 {{ this.countdownObj.dismissCountDown }} 秒後才能再次點選...</p>
+                <b-progress variant="warning" :max="countdownObj.dismissSecs"
+                    :value="this.countdownObj.dismissCountDown" height="4px"></b-progress>
+            </b-alert>
+            <b-button block size="lg" @click="randomNext()">隨機進行
+            </b-button>
         </b-container>
     </div>
     <!-- Required scripts -->
@@ -105,6 +111,11 @@
                     vueState: {
                         ready: false,
                     },
+                    countdownObj: {
+                        dismissSecs: 30,
+                        dismissCountDown: 0,
+                        showDismissibleAlert: false
+                    },
                     data: {},
                     slide: 0,
                     sliding: null,
@@ -119,17 +130,27 @@
                 }
             },
             methods: {
+                //countdown
+                countDownChanged(dismissCountDown) {
+                    this.countdownObj.dismissCountDown = dismissCountDown;
+                },
+                showAlert() {
+                    this.countdownObj.dismissCountDown = this.countdownObj.dismissSecs;
+                },
+                // carousel
                 randomNext() {
                     var index = this.getRandom(0, this.nowContext.length - 1);
-                    this.$refs.carousel.setSlide(index)
+                    this.$refs.carousel.setSlide(index);
                 },
                 onSlideStart(slide) {
                     this.sliding = true
                 },
                 onSlideEnd(slide) {
-                    this.sliding = false
+                    this.sliding = false;
+                    this.showAlert();
                 },
 
+                //
                 getContext() {
                     let selectGroup = this.data.filter(i => i.level.split(',').includes(this.topic));
                     this.nowContext = selectGroup;
@@ -149,6 +170,7 @@
                 t.classList.remove("hidden-at-beggin");
                 var notReady = document.getElementById("notReady");
                 notReady.classList.add("hidden-at-beggin");
+
             },
         })
     </script>
