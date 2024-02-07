@@ -38,7 +38,7 @@
                     }"></div>
 
             <b-button block size="lg" @click="getContextRandom()">隨機抽卡</b-button>
-            <b-button block size="lg" @click="getContextSequence()">循序抽卡</b-button>
+            <!-- <b-button block size="lg" @click="getContextSequence()">循序抽卡</b-button> -->
             </b-col>
         </b-container>
     </div>
@@ -55,6 +55,9 @@
             //model層
             data() {
                 return {
+                    eden: {
+                        imgs: "https://msit12806.github.io/Eden/imgs.json",
+                    },
                     vueState: {
                         ready: false,
                     },
@@ -69,7 +72,7 @@
                     this.nowContext.number = this.getRandom(1, this.pics.length - 1);
                 },
                 getContextSequence() {
-                    if (this.nowContext.number < 37)
+                    if (this.nowContext.number < this.pics.length)
                         ++this.nowContext.number;
                     else
                         this.nowContext.number = 1;
@@ -81,9 +84,9 @@
 
             //生命週期事件
             mounted() {
-                axios.get("https://msit12806.github.io/Eden/imgs.json").then(res => {
-                    console.log(res.data);
+                axios.get(this.eden.imgs).then(res => {
                     this.pics = res.data;
+                    
                     this.vueState.ready = true;
                     this.nowContext.number = 0
                 });

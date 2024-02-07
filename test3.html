@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Required Stylesheets -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <style>
+    </style>
+    <!-- Our application root element -->
+    <div>
+        <img id="a" src="https://picsum.photos/600/400/?image=94" alt="">
+        <img id="b" src="https://picsum.photos/600/400/?image=94" alt="">
+        <img id="c" src="https://picsum.photos/600/400/?image=94" alt="">
+        <img id="d" src="https://picsum.photos/600/400/?image=94" alt="">
+        <img id="e" src="https://picsum.photos/600/400/?image=94" alt="">
+        <img id="f" src="https://picsum.photos/600/400/?image=94" alt="">
+        <img id="g" src="https://picsum.photos/600/400/?image=94" alt="">
+        <img id="h" src="https://picsum.photos/600/400/?image=94" alt="">
+        <img src="https://picsum.photos/600/400/?image=94" alt="">
+    </div>
+    <!-- cdn jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="imgcheckbox.js"></script>
+    <script>
+        $(function () {
+            $("#a").data("aaaaa",12234);//jq的奇怪設定
+            $("#a").imgCheckbox({
+                onload: function () {
+                    // Do something fantastic!
+                },
+                onclick: function (el) {
+                }
+            });
+            $("#b").imgCheckbox({
+                onload: function () {
+                    // Do something fantastic!
+                },
+                onclick: function (el) {
+                },
+                fadeCheckMark:true,
+                graySelected:false,
+            });
+            $("#c").imgCheckbox({
+                onload: function () {
+                    // Do something fantastic!
+                },
+                onclick: function (el) {
+                }
+            });
+            $("#d").imgCheckbox({
+                onload: function () {
+                    // Do something fantastic!
+                },
+                onclick: function (el) {
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Required Stylesheets -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <style>
+        span.imgCheckbox img {
+            display: block;
+            margin: 0;
+            padding: 0;
+            transition-duration: 300ms;
+        }
+
+        span.imgCheckbox.imgChked img {
+            transform: scale(0.8);
+        }
+
+        span.imgCheckbox {
+            user-select: none;
+            -webkit-user-select: none;
+            /* Chrome all / Safari all */
+            -moz-user-select: none;
+            /* Firefox all */
+            -ms-user-select: none;
+            /* IE 10+ */
+            position: relative;
+            padding: 0;
+            margin: 5px;
+            display: inline-block;
+            border: 1px solid transparent;
+            transition-duration: 300ms;
+        }
+
+        span.imgCheckbox.imgChked {
+            border-color: #ccc;
+            background-color: #ccc;
+        }
+
+        span.imgCheckbox::before {
+            display: block;
+            background-size: 100% 100%;
+            content: '';
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;
+            position: absolute;
+            margin: 0.5%;
+            z-index: 1;
+            text-align: center;
+            transition-duration: 300ms;
+
+            background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtMzQ2LjM4NCkiPjxwYXRoIGZpbGw9IiMxZWM4MWUiIGZpbGwtb3BhY2l0eT0iLjgiIGQ9Ik0zMiAzNDYuNGEzMiAzMiAwIDAgMC0zMiAzMiAzMiAzMiAwIDAgMCAzMiAzMiAzMiAzMiAwIDAgMCAzMi0zMiAzMiAzMiAwIDAgMC0zMi0zMnptMjEuMyAxMC4zbC0yNC41IDQxTDkuNSAzNzVsMTcuNyA5LjYgMjYtMjh6Ii8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTkuNSAzNzUuMmwxOS4zIDIyLjQgMjQuNS00MS0yNiAyOC4yeiIvPjwvZz48L3N2Zz4=);
+            width: 30px;
+            height: 30px;
+            top: 0.5%;
+            left: 0.5%;
+            transform: scale(0);
+        }
+
+        span.imgCheckbox.imgChked::before {
+            transform: scale(1);
+        }
+    </style>
+    <!-- Our application root element -->
+    <div id="app" style="background-color: #FFF8DC;">
+        <!-- 遊戲邏輯： -->
+        <!-- 選擇多張圖片 -->
+        <!-- 實作 img 外包span，控制span 的 class達成框選 & 無框選 -->
+        <!-- 實作 img 外包span -->
+        <!-- 拖拉 排序說故事 -->
+        <div v-show="this.state==1">
+            <b-row>
+                <b-col cols="3" v-for="(item,index) in imgs">
+                    <span :class="setImgStyle(item)" @click="clickImg(item)">
+                        <b-img fluid :src="item.picture" alt="">
+                    </span>
+                </b-col>
+            </b-row>
+        </div>
+        <div v-show="this.state==2">
+            <b-row>
+                <b-col cols="3"  v-for="(item,index) in selected">
+                    
+                        <b-img fluid :src="item.picture" alt="">
+                </b-col>
+            </b-row>
+        </div>
+        <b-button @click="state=2;">我選好了</b-button>
+    </div>
+
+    <!-- Required scripts -->
+    <!-- axios 非同步呼叫套件 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- vue 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
+    <!-- bootstrap-vue -->
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <!-- owl carousel -->
+    <script src="https://cdn.jsdelivr.net/npm/vue-carousel@0.18.0/dist/vue-carousel.min.js"></script>
+    <script>
+        window.app = new Vue({
+            el: '#app',
+            components: {
+                'carousel': VueCarousel.Carousel,
+                'slide': VueCarousel.Slide,
+            },
+            data() {
+                return {
+                    eden: {
+                        traits: "https://msit12806.github.io/Eden/traits.json",
+                        imgs: "https://msit12806.github.io/Eden/imgs.json"
+                    },
+                    vueState: {
+                        ready: false,
+                    },
+                    imgs: [],
+                    //
+                    state: 1,
+                    defaultStyles: {},
+                    selected: [],
+
+                }
+            },
+            methods: {
+                setImgStyle(data) {
+                    const i = this.selected.findIndex(i => i.picture === data.picture);
+                    if (i == -1) {
+                        //not exist
+                        return "imgCheckbox";
+                    } else {
+                        //exist
+                        return "imgCheckbox imgChked";
+                    }
+
+                },
+                clickImg(data) {
+                    //add/remove to selected array.
+                    const i = this.selected.findIndex(i => i.picture === data.picture);
+                    console.log(i);
+                    if (i == -1) {
+                        //add
+                        this.selected.push(data);
+                    } else {
+                        //delete selected[i];
+                        this.selected.splice(i, 1);
+                    }
+
+                },
+                changeSelection(el, howToModify) {
+                    switch (howToModify) {
+                        case CHK_DESELECT:
+                            el.removeClass("imgChked");
+                            break;
+                        case CHK_TOGGLE:
+                            el.toggleClass("imgChked");
+                            break;
+                        case CHK_SELECT:
+                            el.addClass("imgChked");
+                            break;
+                    }
+                },
+            },
+            mounted() {
+                console.log(window.VOwlCarousel);
+                let triatsUrl = this.eden.traits;
+                let imgsUrl = this.eden.imgs;
+
+                const getTriats = axios.get(triatsUrl);
+                const getImgs = axios.get(imgsUrl);
+
+                axios.all([getTriats, getImgs]).then(axios.spread((...responses) => {
+                    const traitsData = responses[0].data;
+                    const imgsData = responses[1].data;
+
+                    // use/access the results
+
+                    this.traits = traitsData;
+                    this.imgs = imgsData;
+                    this.vueState.ready = true;
+                }));
+
+
+            },
+        })
+    </script>
+</body>
+
+</html>

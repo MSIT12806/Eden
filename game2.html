@@ -108,6 +108,9 @@
             el: '#app',
             data() {
                 return {
+                    eden: {
+                        url: "https://msit12806.github.io/Eden/game2Data.json",
+                    },
                     vueState: {
                         ready: false,
                     },
@@ -140,6 +143,7 @@
                 // carousel
                 randomNext() {
                     var index = this.getRandom(0, this.nowContext.length - 1);
+                    console.log(index);
                     this.$refs.carousel.setSlide(index);
                 },
                 onSlideStart(slide) {
@@ -152,8 +156,9 @@
 
                 //
                 getContext() {
-                    let selectGroup = this.data.filter(i => i.level.split(',').includes(this.topic));
+                    let selectGroup = this.data.filter(i => i.level.split(',').includes(this.topic)).sort(()=>Math.random() - 0.5);
                     this.nowContext = selectGroup;
+                    this.randomNext();
                 },
                 getRandom(min, max) {
                     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -161,7 +166,7 @@
             },
             //生命週期事件
             mounted() {
-                axios.get("https://msit12806.github.io/Eden/game2Data.json").then(res => {
+                axios.get(this.eden.url).then(res => {
                     console.log(res.data);
                     this.data = res.data;
                     this.vueState.ready = true;

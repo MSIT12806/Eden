@@ -20,7 +20,7 @@
         <b-container>
             <div>
                 <b-card no-body style="max-width: 20rem;" header-bg-variant="dark">
-                    
+
                     <b-card-header class="bg-dark">
                         <h4 class="text-light text-center">{{this.nowCardState.trait.advantage}}</h4>
                     </b-card-header>
@@ -48,6 +48,10 @@
             el: '#app',
             data() {
                 return {
+                    eden: {
+                        traits: "https://msit12806.github.io/Eden/traits.json",
+                        imgs: "https://msit12806.github.io/Eden/imgs.json"
+                    },
                     vueState: {
                         ready: false,
                     },
@@ -86,10 +90,8 @@
                 },
             },
             mounted() {
-                let triatsUrl =
-                    "https://msit12806.github.io/Eden/traits.json";
-                let imgsUrl =
-                    "https://msit12806.github.io/Eden/imgs.json";
+                let triatsUrl = this.eden.traits;
+                let imgsUrl = this.eden.imgs;
 
                 const getTriats = axios.get(triatsUrl);
                 const getImgs = axios.get(imgsUrl);

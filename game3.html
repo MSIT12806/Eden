@@ -73,6 +73,8 @@
                             </div>
                         </b-card>
                     </b-card-group>
+
+                    <b-button>重新選擇</b-button>
                 </div>
             </div>
         </b-container>
@@ -93,6 +95,9 @@
             //model層
             data() {
                 return {
+                    eden:{
+                        traits:"https://msit12806.github.io/Eden/traits.json",
+                    },
                     clientState: {
                         showGood: true,
                     },
@@ -137,9 +142,18 @@
                     }
                 },
             },
+       
+            computed: {
+                state() {
+                    return this.selected.length === 3 || this.selected.length === 4 || this.selected.length ===
+                        5;
+                }
+            },
+
+
             //生命週期事件
             mounted() {
-                axios.get("https://msit12806.github.io/Eden/traits.json").then(res => {
+                axios.get(this.eden.traits).then(res => {
                     this.traits = res.data;
                     this.vueState.ready = true;
                 });
@@ -148,12 +162,6 @@
                 var notReady = document.getElementById("notReady");
                 notReady.classList.add("hidden-at-beggin");
             },
-            computed: {
-                state() {
-                    return this.selected.length === 3 || this.selected.length === 4 || this.selected.length ===
-                        5;
-                }
-            }
 
         });
     </script>
