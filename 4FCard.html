@@ -141,19 +141,10 @@
             color: #fff;
         }
 
-
-        .footer-menu ul li a:hover {
-            background-color: #555;
-            /* 设置鼠标悬停时的背景颜色 */
-        }
-
-        .footer-menu ul li a:focus,
-        /* 选中链接时的样式 */
-        .footer-menu ul li a:active {
-            background-color: #fff;
-            /* 设置选中链接的背景颜色 */
-            color: #333;
-            /* 设置选中链接的文字颜色 */
+        /*class 為 footer-menu 的 ul> li 當中的 a ， 若有 active class，則套用此樣式*/
+        .footer-menu ul li a.active {
+            /*文字改為粗體字*/
+            font-weight: bold;
         }
     </style>
 </head>
@@ -220,7 +211,14 @@
     <!-- axios 非同步呼叫套件 -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
+        var level = 1;
         document.addEventListener("DOMContentLoaded", () => {
+            // 全域變數 level 從網址取得
+            console.log(
+                window.location.href
+            )
+            level = new URLSearchParams(window.location.href).get('level') || 1;
+            console.log(level)
             setLinkUrl()
             setCurrentLevelStyle()
             initPage()
@@ -249,9 +247,6 @@
         }
     </script>
     <script>
-        // 全域變數 level 從網址取得
-        var level = new URLSearchParams(window.location.href).get('level') || 1;
-
         function initPage() {
             loadData(InitSlider)
         }
