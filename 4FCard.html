@@ -113,20 +113,62 @@
         .slider .slide:nth-child(6n+6) {
             background: #f1c40f;
         }
+
+        /*footer style*/
+        .footer-menu {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            color: #fff;
+        }
+
+        .footer-menu ul {
+            list-style-type: none;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer-menu ul li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        .footer-menu ul li a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+
+        .footer-menu ul li a:hover {
+            background-color: #555;
+            /* 设置鼠标悬停时的背景颜色 */
+        }
+
+        .footer-menu ul li a:focus,
+        /* 选中链接时的样式 */
+        .footer-menu ul li a:active {
+            background-color: #fff;
+            /* 设置选中链接的背景颜色 */
+            color: #333;
+            /* 设置选中链接的文字颜色 */
+        }
     </style>
 </head>
 
 <body>
-
-    <div id="notReady">
-        網頁加載中，請稍後...
-    </div>
-    <!-- Our application root element -->
-    <div id="app" style="background-color: #FFF8DC;">
-
-        <div class="slider">
-            <ul class="slides-container">
-                <!-- <li class="slide">
+    <div leng="zh">
+        <div id="notReady">
+            網頁加載中，請稍後...
+        </div>
+        <!-- Our application root element -->
+        <div id="app" style="background-color: #FFF8DC;">
+            <div class="content">
+                <div class="slider">
+                    <ul class="slides-container">
+                        <!-- <li class="slide">
                     <div class="parallax">
                         <p>Welcome</p>
                     </div>
@@ -161,18 +203,57 @@
                         <p><a href="http://noefalque.com">noe.im</a> 🎉</p>
                     </div>
                 </li> -->
-            </ul>
+                    </ul>
+                </div>
+            </div>
         </div>
+        <footer class="footer-menu">
+            <ul>
+                <li><a href="#" id="level1Link">輕鬆聊</a></li>
+                <li><a href="#" id="level2Link">猜猜看</a></li>
+                <li><a href="#" id="level3Link">說感受</a></li>
+                <li><a href="#" id="level4Link">談未來</a></li>
+            </ul>
+        </footer>
+    </div>
+    <div leng="en">
+        Sorry, we don't prepare English content!
     </div>
     <!-- Required scripts -->
     <!-- axios 非同步呼叫套件 -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            setLinkUrl()
+            setCurrentLevelStyle()
             initPage()
         });
+    </script>
+    <script>
+        function setLinkUrl() {
+            // 取得目前網址，但是去掉網址的參數，並 remove '#'字'
+            var thisPageUrl = window.location.href.split('?')[0].replace('#', '')
+            // 改變 id 為 levelOneLink 的超連結為  thisPageUrl 加上 level=1
+            document.getElementById('level1Link').href = thisPageUrl + '?level=1'
+            document.getElementById('level2Link').href = thisPageUrl + '?level=2'
+            document.getElementById('level3Link').href = thisPageUrl + '?level=3'
+            document.getElementById('level4Link').href = thisPageUrl + '?level=4'
+        }
 
+        function setCurrentLevelStyle() {
+            console.log('setCurrentLevelStyle')
+            // 將 目前 level 的超連結加上 active class
+            var level = new URLSearchParams(window.location.href).get('level') || 1;
+            document.getElementById('level1Link').classList.remove('active')
+            document.getElementById('level2Link').classList.remove('active')
+            document.getElementById('level3Link').classList.remove('active')
+            document.getElementById('level4Link').classList.remove('active')
+            document.getElementById('level' + level + 'Link').classList.add('active')
+        }
+    </script>
+    <script>
+        // 全域變數 level 從網址取得
+        var level = new URLSearchParams(window.location.href).get('level') || 1;
 
         function initPage() {
             loadData(InitSlider)
@@ -180,12 +261,14 @@
 
         function loadData(callback) {
             axios.get("https://msit12806.github.io/Eden/game2Data.json").then(res => {
-                var dd = shuffleArray(res.data)
-                console.log(dd[0])
-                console.log(dd[1])
-                console.log(dd[2])
-                for (var i in dd) {
-                    appendCard(dd[i].question)
+                var dataList = shuffleArray(res.data)
+                console.log(dataList[0])
+                console.log(dataList[1])
+                console.log(dataList[2])
+                for (var i in dataList) {
+                    if (dataList[i].level == level) {
+                        appendCard(dataList[i].question)
+                    }
                 }
 
                 callback();
@@ -208,11 +291,9 @@
           </div>
         </li>
       `;
-
             // 將 HTML 字串插入到指定的 HTML 元素中
             slidesContainer.innerHTML = originHtml + htmlString;
         }
-
 
         function InitSlider() {
             const $sliders = document.querySelectorAll('.slider')
@@ -342,6 +423,18 @@
                 this.goTo(this.current - 1)
             }
 
+        }
+    </script>
+    <script>
+        function switchLanguage(lang) {
+            var elements = document.querySelectorAll('[lang]');
+            for (var i = 0; i < elements.length; i++) {
+                if (elements[i].getAttribute('lang') === lang) {
+                    elements[i].style.display = 'block';
+                } else {
+                    elements[i].style.display = 'none';
+                }
+            }
         }
     </script>
 </body>
