@@ -217,12 +217,29 @@
             console.log(
                 window.location.href
             )
-            level = new URLSearchParams(window.location.href).get('level') || 1;
+            level = getParameterValue('level') || 1;
             console.log(level)
             setLinkUrl()
             setCurrentLevelStyle()
             initPage()
         });
+
+        function getParameterValue(parameterName) {
+            // 取得當前網址
+            var url = window.location.href;
+
+            // 創建 URL 物件
+            var urlObject = new URL(url);
+
+            // 從 URL 物件的 search 部分創建 URLSearchParams 物件
+            var searchParams = new URLSearchParams(urlObject.search);
+
+            // 使用 get 方法取得參數值
+            var parameterValue = searchParams.get(parameterName);
+
+            // 返回參數值
+            return parameterValue;
+        }
     </script>
     <script>
         function setLinkUrl() {
@@ -238,7 +255,6 @@
         function setCurrentLevelStyle() {
             console.log('setCurrentLevelStyle')
             // 將 目前 level 的超連結加上 active class
-            var level = new URLSearchParams(window.location.href).get('level') || 1;
             document.getElementById('level1Link').classList.remove('active')
             document.getElementById('level2Link').classList.remove('active')
             document.getElementById('level3Link').classList.remove('active')
